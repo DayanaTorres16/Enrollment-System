@@ -1,218 +1,9 @@
-using System;
-using System.Collections.Generic;
-
-interface IMatriculable
-{
-    void RegistrarMatricula();
-    void CancelarMatricula();
-    void MostrarDetallesMatricula();
-}
-
-interface IPagable
-{
-    decimal CalcularMontoPendiente();
-    void RealizarPago(decimal monto);
-    bool EsPagadoCompleto();
-}
-
-public abstract class Persona
-{
-    public string Nombre { get; set; }
-    public string Apellido { get; set; }
-    protected int Documento { get; set; }
-    public string Email { get; set; }
-    public string Telefono { get; set; }
-
-    public string ObtenerNombre()
-    {
-        return $"{Nombre} {Apellido}";
-    }
-
-    public abstract void MostrarInformacion();
-}
-
-public class Estudiante : Persona
-{
-    public string Carrera { get; set; }
-    public int Semestre { get; set; }
-    public string CodigoEstudiante { get; set; }
-
-    public Estudiante(string nombre, string apellido, int documento)
-    {
-        Nombre = nombre;
-        Apellido = apellido;
-        Documento = documento;
-        CodigoEstudiante = $"EST{documento}";
-    }
-
-    public int ObtenerDocumento()
-    {
-        return Documento;
-    }
-
-    public override void MostrarInformacion()
-    {
-        Console.WriteLine("\nINFORMACION DEL ESTUDIANTE");
-        Console.WriteLine($"Codigo: {CodigoEstudiante}");
-        Console.WriteLine($"Nombre: {ObtenerNombre()}");
-        Console.WriteLine($"Documento: {Documento}");
-        Console.WriteLine($"Email: {Email}");
-        Console.WriteLine($"Telefono: {Telefono}");
-        Console.WriteLine($"Carrera: {Carrera}");
-        Console.WriteLine($"Semestre: {Semestre}");
-    }
-}
-
-public class Personal : Persona
-{
-    public string Cargo { get; set; }
-    public string Departamento { get; set; }
-    public decimal Salario { get; set; }
-    public string CodigoEmpleado { get; set; }
-
-    public Personal(string nombre, string apellido, int documento)
-    {
-        Nombre = nombre;
-        Apellido = apellido;
-        Documento = documento;
-        CodigoEmpleado = $"PER{documento}";
-    }
-
-    public int ObtenerDocumento()
-    {
-        return Documento;
-    }
-
-    public override void MostrarInformacion()
-    {
-        Console.WriteLine("\nINFORMACION DEL PERSONAL");
-        Console.WriteLine($"Codigo: {CodigoEmpleado}");
-        Console.WriteLine($"Nombre: {ObtenerNombre()}");
-        Console.WriteLine($"Documento: {Documento}");
-        Console.WriteLine($"Email: {Email}");
-        Console.WriteLine($"Telefono: {Telefono}");
-        Console.WriteLine($"Cargo: {Cargo}");
-        Console.WriteLine($"Departamento: {Departamento}");
-        Console.WriteLine($"Salario: ${Salario:N2}");
-    }
-}
-
-public class Matricula : IMatriculable, IPagable
-{
-    public int IdMatricula { get; set; }
-    public DateTime FechaMatricula { get; set; }
-    public string Estado { get; private set; }
-    public decimal CostoTotal { get; set; }
-    public decimal MontoPagado { get; private set; }
-    public Estudiante Estudiante { get; set; }
-    public List<string> Materias { get; set; }
-    public Personal ResponsableRegistro { get; set; }
-
-    public Matricula()
-    {
-        Materias = new List<string>();
-        Estado = "Pendiente";
-        MontoPagado = 0;
-    }
-
-    public void RegistrarMatricula()
-    {
-        if (ValidarMatricula())
-        {
-            Estado = "Activa";
-            FechaMatricula = DateTime.Now;
-            Console.WriteLine($"\nMatricula #{IdMatricula} registrada exitosamente");
-            Console.WriteLine($"Estudiante: {Estudiante.ObtenerNombre()}");
-            Console.WriteLine($"Registrada por: {ResponsableRegistro?.ObtenerNombre() ?? "Sistema"}");
-        }
-        else
-        {
-            Console.WriteLine($"\nError: No se pudo registrar la matricula #{IdMatricula}");
-        }
-    }
-
-    public void CancelarMatricula()
-    {
-        if (Estado == "Activa")
-        {
-            Estado = "Cancelada";
-            Console.WriteLine($"\nMatricula #{IdMatricula} ha sido cancelada");
-        }
-        else
-        {
-            Console.WriteLine($"\nNo se puede cancelar. Estado actual: {Estado}");
-        }
-    }
-
-    public void MostrarDetallesMatricula()
-    {
-        Console.WriteLine("\nDETALLE DE MATRICULA");
-        Console.WriteLine($"ID Matricula: #{IdMatricula}");
-        Console.WriteLine($"Estado: {Estado}");
-        Console.WriteLine($"Fecha: {FechaMatricula:dd/MM/yyyy}");
-        Console.WriteLine($"\nEstudiante:");
-        Console.WriteLine($"Nombre: {Estudiante.ObtenerNombre()}");
-        Console.WriteLine($"Codigo: {Estudiante.CodigoEstudiante}");
-        Console.WriteLine($"Carrera: {Estudiante.Carrera}");
-        Console.WriteLine($"Semestre: {Estudiante.Semestre}");
-        Console.WriteLine($"\nInformacion Financiera:");
-        Console.WriteLine($"Costo Total: ${CostoTotal:N2}");
-        Console.WriteLine($"Monto Pagado: ${MontoPagado:N2}");
-        Console.WriteLine($"Monto Pendiente: ${CalcularMontoPendiente():N2}");
-        Console.WriteLine($"Estado de Pago: {(EsPagadoCompleto() ? "COMPLETO" : "PENDIENTE")}");
-        Console.WriteLine($"\nMaterias Inscritas ({Materias.Count}):");
-        foreach (var materia in Materias)
-        {
-            Console.WriteLine($"  - {materia}");
-        }
-        if (ResponsableRegistro != null)
-        {
-            Console.WriteLine($"\nRegistrada por: {ResponsableRegistro.ObtenerNombre()} ({ResponsableRegistro.Cargo})");
-        }
-    }
-
-    public decimal CalcularMontoPendiente()
-    {
-        return CostoTotal - MontoPagado;
-    }
-
-    public void RealizarPago(decimal monto)
-    {
-        if (monto <= 0)
-        {
-            Console.WriteLine("\nEl monto debe ser mayor a 0");
-            return;
-        }
-
-        if (monto > CalcularMontoPendiente())
-        {
-            Console.WriteLine($"\nEl monto excede la deuda. Pendiente: ${CalcularMontoPendiente():N2}");
-            return;
-        }
-
-        MontoPagado += monto;
-        Console.WriteLine($"\nPago registrado: ${monto:N2}");
-        Console.WriteLine($"Total pagado: ${MontoPagado:N2}");
-        Console.WriteLine($"Pendiente: ${CalcularMontoPendiente():N2}");
-    }
-
-    public bool EsPagadoCompleto()
-    {
-        return MontoPagado >= CostoTotal;
-    }
-
-    private bool ValidarMatricula()
-    {
-        return Estudiante != null && 
-               Materias.Count > 0 && 
-               CostoTotal > 0 &&
-               ResponsableRegistro != null;
-    }
-}
+using Ejercicio1.Miembros;
+using Ejercicio1.Matricula;
 
 class Program
 {
-    static void Main(string[] args)
+    static void Main()
     {
         Console.WriteLine("SISTEMA DE MATRICULACION UNIVERSITARIA\n");
 
@@ -273,10 +64,11 @@ class Program
             CostoTotal = 2500000m,
             ResponsableRegistro = coordinador
         };
-        matricula1.Materias.Add("Programacion Orientada a Objetos");
-        matricula1.Materias.Add("Bases de Datos Avanzadas");
-        matricula1.Materias.Add("Estructuras de Datos");
-        matricula1.Materias.Add("Ingenieria de Software");
+        
+        matricula1.Materias.Add(new Materia { Codigo = "POO101", Nombre = "Programacion Orientada a Objetos", Creditos = 4 });
+        matricula1.Materias.Add(new Materia { Codigo = "BDA202", Nombre = "Bases de Datos Avanzadas", Creditos = 3 });
+        matricula1.Materias.Add(new Materia { Codigo = "EDT303", Nombre = "Estructuras de Datos", Creditos = 3 });
+        matricula1.Materias.Add(new Materia { Codigo = "ISO404", Nombre = "Ingenieria de Software", Creditos = 4 });
 
         matricula1.RegistrarMatricula();
         matricula1.RealizarPago(1000000m);
@@ -291,9 +83,10 @@ class Program
             CostoTotal = 2200000m,
             ResponsableRegistro = secretaria
         };
-        matricula2.Materias.Add("Marketing Digital");
-        matricula2.Materias.Add("Finanzas Corporativas");
-        matricula2.Materias.Add("Gestion de Proyectos");
+        
+        matricula2.Materias.Add(new Materia { Codigo = "MKT101", Nombre = "Marketing Digital", Creditos = 3 });
+        matricula2.Materias.Add(new Materia { Codigo = "FIN202", Nombre = "Finanzas Corporativas", Creditos = 4 });
+        matricula2.Materias.Add(new Materia { Codigo = "GPR303", Nombre = "Gestion de Proyectos", Creditos = 3 });
 
         matricula2.RegistrarMatricula();
         matricula2.RealizarPago(2200000m);
@@ -301,7 +94,5 @@ class Program
 
         Console.WriteLine("\n\nPRUEBA DE CANCELACION\n");
         matricula2.CancelarMatricula();
-
-        Console.WriteLine("\nSistema ejecutado exitosamente");
     }
 }
