@@ -8,36 +8,31 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="956fcf6d-9050-433b-a7bc-5a9fc94cc646" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Ejercicio1/Matricula/MatriculaReporte.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Ejercicio1/Matricula/PagoMatricula.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Ejercicio1/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Ejercicio1/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/Abstracciones/IEstudiantes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Abstracciones/IEstudiantes.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ejercicio1/Abstracciones/IMateria.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Abstracciones/IMateria.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/Abstracciones/IMatriculable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Abstracciones/IMatriculable.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ejercicio1/Abstracciones/IPagable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Abstracciones/IPagable.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/Abstracciones/IResponsable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Abstracciones/IResponsable.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ejercicio1/Matricula/Matrias.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Matricula/Materia.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ejercicio1/Matricula/Materia.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Matricula/Materia.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/Matricula/Matricula.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Matricula/Matricula.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ejercicio1/Miembros/Estudiantes.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Miembros/Estudiante.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ejercicio1/Matricula/MatriculaReporte.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Matricula/MatriculaReporte.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ejercicio1/Matricula/PagoMatricula.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Matricula/PagoMatricula.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ejercicio1/Miembros/Estudiante.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Miembros/Estudiante.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ejercicio1/Miembros/Persona.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Miembros/Persona.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ejercicio1/Miembros/Personal.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Miembros/Personal.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/Program.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/bin/Debug/net9.0/Ejercicio1.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/bin/Debug/net9.0/Ejercicio1.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/bin/Debug/net9.0/Ejercicio1.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/bin/Debug/net9.0/Ejercicio1.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/bin/Debug/net9.0/Ejercicio1.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/bin/Debug/net9.0/Ejercicio1.pdb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.AssemblyInfo.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.AssemblyInfo.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.AssemblyInfoInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.AssemblyInfoInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.GeneratedMSBuildEditorConfig.editorconfig" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.assets.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.assets.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.csproj.CoreCompileInputs.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.csproj.FileListAbsolute.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.genruntimeconfig.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.genruntimeconfig.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.pdb" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.pdb" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.sourcelink.json" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/Ejercicio1.sourcelink.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/apphost.exe" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/apphost.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/ref/Ejercicio1.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/ref/Ejercicio1.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/refint/Ejercicio1.dll" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Debug/net9.0/refint/Ejercicio1.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/Ejercicio1.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/Ejercicio1.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/rider.project.model.nuget.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Ejercicio1/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/Ejercicio1/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -117,7 +112,7 @@
       <updated>1760328545961</updated>
       <workItem from="1760328547266" duration="235000" />
       <workItem from="1760534517339" duration="29000" />
-      <workItem from="1760534620427" duration="4391000" />
+      <workItem from="1760534620427" duration="7341000" />
     </task>
     <servers />
   </component>

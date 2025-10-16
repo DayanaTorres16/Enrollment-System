@@ -1,8 +1,8 @@
 using Ejercicio1.Abstracciones;
 namespace Ejercicio1.Matricula;
-public class Materia : IMateria
+public class Course : ICourse
 {
-    public string Codigo { get; set; }
-    public string Nombre { get; set; }
-    public int Creditos { get; set; }
+    public string Code { get; set; }
+    public string Name { get; set; }
+    public int Credits { get; set; }
 }

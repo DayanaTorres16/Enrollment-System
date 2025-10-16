@@ -1,31 +1,31 @@
 using Ejercicio1.Abstracciones;
 namespace Ejercicio1.Miembros;
 
-public class Personal : Persona, IResponsable
+public class Staff : Person, IResponsible
 {
-    public string Cargo { get; set; }
-    public string Departamento { get; set; }
-    public decimal Salario { get; set; }
-    public string CodigoEmpleado { get; set; }
+    public string Position { get; set; }
+    public string Department  { get; set; }
+    public decimal Salary  { get; set; }
+    public string EmployeeCode  { get; set; }
 
-    public Personal(string nombre, string apellido, int documento)
+    public Staff(string name, string lastName, int documentNumber)
     {
-        Nombre = nombre;
-        Apellido = apellido;
-        Documento = documento;
-        CodigoEmpleado = $"PER{documento}";
+        Name = name;
+        LastName = lastName;
+        DocumentNumber = documentNumber;
+        EmployeeCode = $"STAFF{documentNumber}";
     }
 
-    public override void MostrarInformacion()
+    public override void ShowInformation()
     {
-        Console.WriteLine("\nINFORMACION DEL PERSONAL");
-        Console.WriteLine($"Codigo: {CodigoEmpleado}");
-        Console.WriteLine($"Nombre: {ObtenerNombre()}");
-        Console.WriteLine($"Documento: {Documento}");
+        Console.WriteLine("\nSTAFF INFORMATION");
+        Console.WriteLine($"Code: {EmployeeCode}");
+        Console.WriteLine($"Name: {GetFullName()}");
+        Console.WriteLine($"Document Number: {DocumentNumber}");
         Console.WriteLine($"Email: {Email}");
-        Console.WriteLine($"Telefono: {Telefono}");
-        Console.WriteLine($"Cargo: {Cargo}");
-        Console.WriteLine($"Departamento: {Departamento}");
-        Console.WriteLine($"Salario: ${Salario:N2}");
+        Console.WriteLine($"Phone Number: {PhoneNumber}");
+        Console.WriteLine($"Position: {Position}");
+        Console.WriteLine($"Department: {Department}");
+        Console.WriteLine($"Salary: ${Salary:N2}");
     }
 }

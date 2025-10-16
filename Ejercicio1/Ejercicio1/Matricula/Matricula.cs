@@ -1,68 +1,66 @@
 using Ejercicio1.Abstracciones;
 namespace Ejercicio1.Matricula;
 
-public class Matricula : IMatriculable
+public class Enrollment : IEnrollable
 {
-    public int IdMatricula { get; set; }
-    public DateTime FechaMatricula { get; set; }
-    public string Estado { get; private set; }
-    public decimal CostoTotal { get; set; }
-    public IEstudiantes Estudiante { get; set; }
+    public int EnrollmentId { get; set; }
+    public DateTime EnrollmentDate { get; set; }
+    public string Status { get; private set; }
+    public decimal TotalCost { get; set; }
+    public IStudent Student { get; set; }
+    public List<ICourse> Courses { get; set; }
+    public IResponsible Responsible { get; set; }
+    public Payment payment;
 
-    public List<IMateria> Materias { get; set; } 
-    
-    public IResponsable ResponsableRegistro { get; set; }
-    public PagoMatricula pago;
-
-    public Matricula()
+    public Enrollment()
     {
-        Materias = new List<IMateria>();
-        Estado = "Pendiente";
-        pago = new PagoMatricula();
+        Courses = new List<ICourse>();
+        Status = "Pending";
+        payment = new Payment();
     }
 
-    public void RegistrarMatricula()
+    public void RegisterEnrollment()
     {
-        if (ValidarMatricula())
+        if (ValidateEnrollment())
         {
-            Estado = "Activa";
-            FechaMatricula = DateTime.Now;
-            pago.CostoTotal = this.CostoTotal;
+            Status = "Active";
+            EnrollmentDate = DateTime.Now;
+            payment.TotalCost = this.TotalCost;
         }
         else
         {
-            throw new Exception("No se puede registrar la matricula");
+            throw new InvalidOperationException("Enrollment could not be registered");
         }
     }
 
-    public void CancelarMatricula()
+    public void CancelEnrollment()
     {
-        if (Estado == "Activa")
+        if (Status == "Active")
         {
-            Estado = "Cancelada";
+            Status = "Canceled";
         }
         else
         {
-            throw new InvalidOperationException("No se puede cancelar.");
+            throw new InvalidOperationException("Enrollment cannot be canceled.");
         }
     }
-    public decimal CalcularMontoPendiente()
+    public decimal CalculatePendingAmount()
     {
-        return pago.CalcularMontoPendiente();
+        return payment.CalculatePendingAmount();
     }
-    public void RealizarPago(decimal monto)
+    public void MakePayment(decimal amount)
     {
-        pago.RealizarPago(monto);
+        payment.MakePayment(amount);
     }
-    public bool EsPagadoCompleto()
+    public bool IsFullyPaid()
     {
-        return pago.EsPagadoCompleto();
+        return payment.IsFullyPaid();
     }
-    private bool ValidarMatricula()
+    public bool ValidateEnrollment()
     {
-        return Estudiante != null && 
-               Materias.Count > 0 && 
-               CostoTotal > 0 && 
-               ResponsableRegistro != null;
+        return Student != null && 
+               Courses.Count > 0 && 
+               TotalCost > 0 && 
+               Responsible != null;
     }
 }

@@ -1,7 +1,7 @@
 namespace Ejercicio1.Abstracciones;
 
-public interface IResponsable
+public interface IResponsible
 {
-    string Cargo { get; }
-    string ObtenerNombre();
+    string Position { get; }
+    string GetFullName();
 }

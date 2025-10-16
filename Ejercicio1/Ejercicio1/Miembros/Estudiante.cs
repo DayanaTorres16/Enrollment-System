@@ -1,29 +1,29 @@
 using Ejercicio1.Abstracciones;
 namespace Ejercicio1.Miembros;
 
-public class Estudiante : Persona, IEstudiantes
+public class Student : Person, IStudent
 {
-    public string Carrera { get; set; }
-    public int Semestre { get; set; }
-    public string CodigoEstudiante { get; set; }
+    public string Career { get; set; }
+    public int Semester { get; set; }
+    public string StudentCode { get; }
     
-    public Estudiante(string nombre, string apellido, int documento)
+    public Student(string name, string lastName, int documentNumber)
     {
-        Nombre = nombre;
-        Apellido = apellido;
-        Documento = documento;
-        CodigoEstudiante = $"EST{documento}";
+        Name = name;
+        LastName = lastName;
+        DocumentNumber = documentNumber;
+        StudentCode = $"EST{documentNumber}";
     }
-    
-    public override void MostrarInformacion()
+
+    public override void ShowInformation()
     {
-        Console.WriteLine("\nINFORMACION DEL ESTUDIANTE");
-        Console.WriteLine($"Codigo: {CodigoEstudiante}");
-        Console.WriteLine($"Nombre: {ObtenerNombre()}");
-        Console.WriteLine($"Documento: {Documento}");
+        Console.WriteLine("\nSTUDENT INFORMATION");
+        Console.WriteLine($"Code: {StudentCode}");
+        Console.WriteLine($"Name: {GetFullName()}");
+        Console.WriteLine($"Document Number: {DocumentNumber}");
         Console.WriteLine($"Email: {Email}");
-        Console.WriteLine($"Telefono: {Telefono}");
-        Console.WriteLine($"Carrera: {Carrera}");
-        Console.WriteLine($"Semestre: {Semestre}");
+        Console.WriteLine($"Phone Number: {PhoneNumber}");
+        Console.WriteLine($"Major: {Career}");
+        Console.WriteLine($"Semester: {Semester}");
     }
 }

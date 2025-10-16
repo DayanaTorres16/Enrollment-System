@@ -1,7 +1,7 @@
 namespace Ejercicio1.Abstracciones;
 
-public interface IMatriculable
+public interface IEnrollable
 {
-    void RegistrarMatricula();
-    void CancelarMatricula();
+    void RegisterEnrollment();
+    void CancelEnrollment();
 }

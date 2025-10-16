@@ -1,8 +1,8 @@
 namespace Ejercicio1.Abstracciones;
 
-public interface IMateria
+public interface ICourse
 {
-    string Codigo { get; }
-    string Nombre { get; }
-    int Creditos { get; }
+    string Code { get; }
+    string Name { get; }
+    int Credits { get; }
 }

@@ -1,9 +1,9 @@
 namespace Ejercicio1.Abstracciones;
 
-public interface IEstudiantes
+public interface IStudent
 {
-    string CodigoEstudiante { get; }
-    string Carrera { get; }
-    int Semestre { get; }
-    string ObtenerNombre();
+    string StudentCode { get; }
+    string Career { get; }
+    int Semester { get; }
+    string GetFullName();
 }

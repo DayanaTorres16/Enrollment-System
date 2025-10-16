@@ -2,32 +2,31 @@ using Ejercicio1.Abstracciones;
 namespace Ejercicio1.Matricula;
 
 
-public class PagoMatricula:IPagable
+public class Payment : IPayable
 {
-    public decimal CostoTotal { get; set; }
-    public decimal MontoPagado { get; set; }
+    public decimal TotalCost  { get; set; }
+    public decimal AmountPaid  { get; set; }
     
-    public decimal CalcularMontoPendiente()
+    public decimal CalculatePendingAmount()
     {
-        return CostoTotal - MontoPagado;
+        return TotalCost - AmountPaid;
     }
 
-    public void RealizarPago(decimal monto)
-    {
-        if (monto <= 0)
-        {
-            throw new Exception("El monto debe ser mayor a 0");
-        }
+    public void MakePayment(decimal amount)
 
-        if (monto > CalcularMontoPendiente())
+    {
+        if (amount <= 0)
         {
-            throw new Exception("El monto excede la deuda.");
+            throw new ArgumentException("The amount must be greater than 0");
         }
-        MontoPagado += monto;
+        if (amount > CalculatePendingAmount())
+        {
+            throw new InvalidOperationException("The amount exceeds the debt.");
+        }
+        AmountPaid += amount;
     }
-
-    public bool EsPagadoCompleto()
+    public bool IsFullyPaid()
     {
-        return MontoPagado >= CostoTotal;
+        return AmountPaid >= TotalCost;
     }
 };

@@ -1,8 +1,8 @@
 namespace Ejercicio1.Abstracciones;
 
-public interface IPagable
+public interface IPayable
 {
-    decimal CalcularMontoPendiente();
-    void RealizarPago(decimal monto);
-    bool EsPagadoCompleto();
+    decimal CalculatePendingAmount();
+    void MakePayment(decimal monto);
+    bool IsFullyPaid();
 }

@@ -1,32 +1,32 @@
 
 namespace Ejercicio1.Matricula;
 
-public class MatriculaReporte
+public static class EnrollmentReporter
 {
-    public static void MostrarDetallesMatricula(Matricula matricula)
+    public static void ShowEnrollmentDetails(Enrollment enrollment)
     {
-        Console.WriteLine("\nDETALLE DE MATRICULA");
-        Console.WriteLine($"ID Matricula: #{matricula.IdMatricula}");
-        Console.WriteLine($"Estado: {matricula.Estado}");
-        Console.WriteLine($"Fecha: {matricula.FechaMatricula:dd/MM/yyyy}");
-        Console.WriteLine($"\nEstudiante:");
-        Console.WriteLine($"Nombre: {matricula.Estudiante.ObtenerNombre()}");
-        Console.WriteLine($"Codigo: {matricula.Estudiante.CodigoEstudiante}");
-        Console.WriteLine($"Carrera: {matricula.Estudiante.Carrera}");
-        Console.WriteLine($"Semestre: {matricula.Estudiante.Semestre}");
-        Console.WriteLine($"\nInformacion Financiera:");
-        Console.WriteLine($"Costo Total: ${matricula.CostoTotal:N2}");
-        Console.WriteLine($"Monto Pagado: ${matricula.pago.MontoPagado:N2}");
-        Console.WriteLine($"Monto Pendiente: ${matricula.CalcularMontoPendiente():N2}");
-        Console.WriteLine($"Estado de Pago: {(matricula.EsPagadoCompleto() ? "COMPLETO" : "PENDIENTE")}");
-        Console.WriteLine($"\nMaterias Inscritas ({matricula.Materias.Count}):");
-        foreach (var materia in matricula.Materias)
+        Console.WriteLine("\nENROLLMENT DETAILS");
+        Console.WriteLine($"Enrollment ID: #{enrollment.EnrollmentId}");
+        Console.WriteLine($"Status: {enrollment.Status}");
+        Console.WriteLine($"Date: {enrollment.EnrollmentDate:dd/MM/yyyy}");
+        Console.WriteLine($"\nStudent:");
+        Console.WriteLine($"Name: {enrollment.Student.GetFullName()}");
+        Console.WriteLine($"Code: {enrollment.Student.StudentCode}");
+        Console.WriteLine($"Major: {enrollment.Student.Career}");
+        Console.WriteLine($"Semester: {enrollment.Student.Semester}");
+        Console.WriteLine($"\nFinancial Information:");
+        Console.WriteLine($"Total Cost: ${enrollment.TotalCost:N2}");
+        Console.WriteLine($"Amount Paid: ${enrollment.payment.AmountPaid:N2}");
+        Console.WriteLine($"Pending Amount: ${enrollment.CalculatePendingAmount():N2}");
+        Console.WriteLine($"Payment Status: {(enrollment.IsFullyPaid() ? "FULLY PAID" : "PENDING")}");
+        Console.WriteLine($"\nEnrolled Courses ({enrollment.Courses.Count}):");
+        foreach (var course in enrollment.Courses)
         {
-            Console.WriteLine($"  - {materia.Nombre} ({materia.Creditos} Creditos)");
+            Console.WriteLine($"  - {course.Name} ({course.Credits} Credits)");
         }
-        if (matricula.ResponsableRegistro != null)
+        if (enrollment.Responsible != null)
         {
-            Console.WriteLine($"\nRegistrada por: {matricula.ResponsableRegistro.ObtenerNombre()} ({matricula.ResponsableRegistro.Cargo})");
+            Console.WriteLine($"\nRegistered by: {enrollment.Responsible.GetFullName()} ({enrollment.Responsible.Position})");
         }
     }
 }
