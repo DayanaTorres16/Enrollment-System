@@ -73,7 +73,7 @@ class Program
         matricula1.RegistrarMatricula();
         matricula1.RealizarPago(1000000m);
         matricula1.RealizarPago(1500000m);
-        matricula1.MostrarDetallesMatricula();
+        MatriculaReporte.MostrarDetallesMatricula(matricula1); 
 
         Console.WriteLine("\n\nSegunda Matricula\n");
         Matricula matricula2 = new Matricula
@@ -90,9 +90,9 @@ class Program
 
         matricula2.RegistrarMatricula();
         matricula2.RealizarPago(2200000m);
-        matricula2.MostrarDetallesMatricula();
+        MatriculaReporte.MostrarDetallesMatricula(matricula2); 
 
         Console.WriteLine("\n\nPRUEBA DE CANCELACION\n");
-        matricula2.CancelarMatricula();
+        MatriculaReporte.MostrarDetallesMatricula(matricula2); 
     }
 }
