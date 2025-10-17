@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Ejercicio1.Abstracciones;
 namespace Ejercicio1.Matricula;
 

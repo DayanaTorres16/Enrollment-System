@@ -1,4 +1,6 @@
 
+using System;
+
 namespace Ejercicio1.Matricula;
 
 public static class EnrollmentReporter
