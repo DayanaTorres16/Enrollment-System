@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Ejercicio1.Miembros;
 using Ejercicio1.Matricula;
 
@@ -5,94 +7,95 @@ class Program
 {
     static void Main()
     {
-        Console.WriteLine("SISTEMA DE MATRICULACION UNIVERSITARIA\n");
+        Console.WriteLine("UNIVERSITY ENROLLMENT SYSTEM\n");
 
-        Personal coordinador = new Personal("Carlos", "Rodriguez", 9876543)
+        Staff coordinator = new Staff("Carlos", "Rodriguez", 9876543)
         {
-            Email = "carlos.rodriguez@universidad.edu",
-            Telefono = "+57 320 9876543",
-            Cargo = "Coordinador Academico",
-            Departamento = "Facultad de Ingenieria",
-            Salario = 4500000m
+            Email = "carlos.rodriguez@university.edu",
+            PhoneNumber = "+57 320 9876543",
+            Position = "Academic Coordinator",
+            Department = "Faculty of Engineering",
+            Salary = 4500000m
         };
 
-        Personal secretaria = new Personal("Ana", "Martinez", 3456789)
+        Staff secretary = new Staff("Ana", "Martinez", 3456789)
         {
-            Email = "ana.martinez@universidad.edu",
-            Telefono = "+57 315 3456789",
-            Cargo = "Secretaria Academica",
-            Departamento = "Registro y Control",
-            Salario = 2800000m
+            Email = "ana.martinez@university.edu",
+            PhoneNumber = "+57 315 3456789",
+            Position = "Academic Secretary",
+            Department = "Registration and Control",
+            Salary = 2800000m
         };
 
-        Estudiante estudiante1 = new Estudiante("Juan", "Perez", 1234567)
+        Student student1 = new Student("Juan", "Perez", 1234567)
         {
-            Email = "juan.perez@universidad.edu",
-            Telefono = "+57 300 1234567",
-            Carrera = "Ingenieria de Sistemas",
-            Semestre = 5
+            Email = "juan.perez@university.edu",
+            PhoneNumber = "+57 300 1234567",
+            Career = "Systems Engineering",
+            Semester = 5
         };
 
-        Estudiante estudiante2 = new Estudiante("Maria", "Garcia", 7654321)
+        Student student2 = new Student("Maria", "Garcia", 7654321)
         {
-            Email = "maria.garcia@universidad.edu",
-            Telefono = "+57 310 7654321",
-            Carrera = "Administracion de Empresas",
-            Semestre = 3
+            Email = "maria.garcia@university.edu",
+            PhoneNumber = "+57 310 7654321",
+            Career = "Business Administration",
+            Semester = 3
         };
 
-        List<Persona> personas = new List<Persona> 
-        { 
-            coordinador, 
-            secretaria, 
-            estudiante1, 
-            estudiante2 
+        List<Person> people = new List<Person>
+        {
+            coordinator,
+            secretary,
+            student1,
+            student2
         };
 
-        Console.WriteLine("MOSTRANDO INFORMACION DE TODAS LAS PERSONAS\n");
-        foreach (Persona persona in personas)
+        Console.WriteLine("SHOWING INFORMATION OF ALL PERSONS\n");
+        foreach (Person person in people)
         {
-            persona.MostrarInformacion();
+            person.ShowInformation();
         }
 
-        Console.WriteLine("\n\nPROCESO DE MATRICULACION\n");
+        Console.WriteLine("\n\nENROLLMENT PROCESS\n");
 
-        Matricula matricula1 = new Matricula
+        Enrollment enrollment1 = new Enrollment
         {
-            IdMatricula = 1001,
-            Estudiante = estudiante1,
-            CostoTotal = 2500000m,
-            ResponsableRegistro = coordinador
+            EnrollmentId = 1001,
+            Student = student1,
+            TotalCost = 2500000m,
+            Responsible = coordinator
         };
-        
-        matricula1.Materias.Add(new Materia { Codigo = "POO101", Nombre = "Programacion Orientada a Objetos", Creditos = 4 });
-        matricula1.Materias.Add(new Materia { Codigo = "BDA202", Nombre = "Bases de Datos Avanzadas", Creditos = 3 });
-        matricula1.Materias.Add(new Materia { Codigo = "EDT303", Nombre = "Estructuras de Datos", Creditos = 3 });
-        matricula1.Materias.Add(new Materia { Codigo = "ISO404", Nombre = "Ingenieria de Software", Creditos = 4 });
 
-        matricula1.RegistrarMatricula();
-        matricula1.RealizarPago(1000000m);
-        matricula1.RealizarPago(1500000m);
-        matricula1.MostrarDetallesMatricula();
+        enrollment1.Courses.Add(new Course { Code = "POO101", Name = "Object-Oriented Programming", Credits = 4 });
+        enrollment1.Courses.Add(new Course { Code = "BDA202", Name = "Advanced Databases", Credits = 3 });
+        enrollment1.Courses.Add(new Course { Code = "EDT303", Name = "Data Structures", Credits = 3 });
+        enrollment1.Courses.Add(new Course { Code = "ISO404", Name = "Software Engineering", Credits = 4 });
 
-        Console.WriteLine("\n\nSegunda Matricula\n");
-        Matricula matricula2 = new Matricula
+        enrollment1.RegisterEnrollment();
+        enrollment1.MakePayment(1000000m);
+        enrollment1.MakePayment(1500000m);
+        EnrollmentReporter.ShowEnrollmentDetails(enrollment1);
+
+        Console.WriteLine("\n\nSECOND ENROLLMENT\n");
+        Enrollment enrollment2 = new Enrollment
         {
-            IdMatricula = 1002,
-            Estudiante = estudiante2,
-            CostoTotal = 2200000m,
-            ResponsableRegistro = secretaria
+            EnrollmentId = 1002,
+            Student = student2,
+            TotalCost = 2200000m,
+            Responsible = secretary
         };
-        
-        matricula2.Materias.Add(new Materia { Codigo = "MKT101", Nombre = "Marketing Digital", Creditos = 3 });
-        matricula2.Materias.Add(new Materia { Codigo = "FIN202", Nombre = "Finanzas Corporativas", Creditos = 4 });
-        matricula2.Materias.Add(new Materia { Codigo = "GPR303", Nombre = "Gestion de Proyectos", Creditos = 3 });
 
-        matricula2.RegistrarMatricula();
-        matricula2.RealizarPago(2200000m);
-        matricula2.MostrarDetallesMatricula();
+        enrollment2.Courses.Add(new Course { Code = "MKT101", Name = "Digital Marketing", Credits = 3 });
+        enrollment2.Courses.Add(new Course { Code = "FIN202", Name = "Corporate Finance", Credits = 4 });
+        enrollment2.Courses.Add(new Course { Code = "GPR303", Name = "Project Management", Credits = 3 });
 
-        Console.WriteLine("\n\nPRUEBA DE CANCELACION\n");
-        matricula2.CancelarMatricula();
+        enrollment2.RegisterEnrollment();
+        enrollment2.MakePayment(2200000m);
+        EnrollmentReporter.ShowEnrollmentDetails(enrollment2);
+
+        Console.WriteLine("\n\nCANCELLATION TEST\n");
+        enrollment2.CancelEnrollment();
+        EnrollmentReporter.ShowEnrollmentDetails(enrollment2);
     }
 }

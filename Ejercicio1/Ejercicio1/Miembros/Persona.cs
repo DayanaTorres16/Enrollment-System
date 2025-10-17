@@ -1,20 +1,20 @@
 namespace Ejercicio1.Miembros;
 
-public abstract class Persona
+public abstract class Person
 {
-    public string Nombre { get; set; }
-    public string Apellido { get; set; }
-    protected int Documento { get; set; }
+    public string Name { get; set; }
+    public string LastName { get; set; }
+    protected int DocumentNumber  { get; set; }
     public string Email { get; set; }
-    public string Telefono { get; set; }
+    public string PhoneNumber  { get; set; }
 
-    public string ObtenerNombre()
+    public string GetFullName()
     {
-        return $"{Nombre} {Apellido}";
+        return $"{Name} {LastName}";
     }
-    public int ObtenerDocumento()
+    public int GetDocumentNumber()
     {
-        return Documento;
+        return DocumentNumber;
     }
-    public abstract void MostrarInformacion();
+    public abstract void ShowInformation();
 }

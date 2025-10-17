@@ -1,117 +1,68 @@
+using System;
+using System.Collections.Generic;
 using Ejercicio1.Abstracciones;
 namespace Ejercicio1.Matricula;
 
-public class Matricula : IMatriculable, IPagable
+public class Enrollment : IEnrollable
 {
-    public int IdMatricula { get; set; }
-    public DateTime FechaMatricula { get; set; }
-    public string Estado { get; private set; }
-    public decimal CostoTotal { get; set; }
-    public decimal MontoPagado { get; private set; }
-    public IEstudiantes Estudiante { get; set; }
+    public int EnrollmentId { get; set; }
+    public DateTime EnrollmentDate { get; set; }
+    public string Status { get; private set; }
+    public decimal TotalCost { get; set; }
+    public IStudent Student { get; set; }
+    public List<ICourse> Courses { get; set; }
+    public IResponsible Responsible { get; set; }
+    public Payment payment;
 
-    public List<IMateria> Materias { get; set; } 
-    
-    public IResponsable ResponsableRegistro { get; set; }
-
-    public Matricula()
+    public Enrollment()
     {
-        Materias = new List<IMateria>();
-        Estado = "Pendiente";
-        MontoPagado = 0;
+        Courses = new List<ICourse>();
+        Status = "Pending";
+        payment = new Payment();
     }
 
-    public void RegistrarMatricula()
+    public void RegisterEnrollment()
     {
-        if (ValidarMatricula())
+        if (ValidateEnrollment())
         {
-            Estado = "Activa";
-            FechaMatricula = DateTime.Now;
-            Console.WriteLine($"\nMatricula #{IdMatricula} registrada exitosamente");
-            Console.WriteLine($"Estudiante: {Estudiante.ObtenerNombre()}");
-            Console.WriteLine($"Registrada por: {ResponsableRegistro?.ObtenerNombre() ?? "Sistema"}");
+            Status = "Active";
+            EnrollmentDate = DateTime.Now;
+            payment.TotalCost = this.TotalCost;
         }
         else
         {
-            Console.WriteLine($"\nError: No se pudo registrar la matricula #{IdMatricula}");
+            throw new InvalidOperationException("Enrollment could not be registered");
         }
     }
 
-    public void CancelarMatricula()
+    public void CancelEnrollment()
     {
-        if (Estado == "Activa")
+        if (Status == "Active")
         {
-            Estado = "Cancelada";
-            Console.WriteLine($"\nMatricula #{IdMatricula} ha sido cancelada");
+            Status = "Canceled";
         }
         else
         {
-            Console.WriteLine($"\nNo se puede cancelar. Estado actual: {Estado}");
+            throw new InvalidOperationException("Enrollment cannot be canceled.");
         }
     }
-
-    public void MostrarDetallesMatricula()
+    public decimal CalculatePendingAmount()
     {
-        Console.WriteLine("\nDETALLE DE MATRICULA");
-        Console.WriteLine($"ID Matricula: #{IdMatricula}");
-        Console.WriteLine($"Estado: {Estado}");
-        Console.WriteLine($"Fecha: {FechaMatricula:dd/MM/yyyy}");
-        Console.WriteLine($"\nEstudiante:");
-        Console.WriteLine($"Nombre: {Estudiante.ObtenerNombre()}");
-        Console.WriteLine($"Codigo: {Estudiante.CodigoEstudiante}");
-        Console.WriteLine($"Carrera: {Estudiante.Carrera}");
-        Console.WriteLine($"Semestre: {Estudiante.Semestre}");
-        Console.WriteLine($"\nInformacion Financiera:");
-        Console.WriteLine($"Costo Total: ${CostoTotal:N2}");
-        Console.WriteLine($"Monto Pagado: ${MontoPagado:N2}");
-        Console.WriteLine($"Monto Pendiente: ${CalcularMontoPendiente():N2}");
-        Console.WriteLine($"Estado de Pago: {(EsPagadoCompleto() ? "COMPLETO" : "PENDIENTE")}");
-        Console.WriteLine($"\nMaterias Inscritas ({Materias.Count}):");
-        foreach (var materia in Materias)
-        {
-            Console.WriteLine($"  - {materia.Nombre} ({materia.Creditos} Creditos)");
-        }
-        if (ResponsableRegistro != null)
-        {
-            Console.WriteLine($"\nRegistrada por: {ResponsableRegistro.ObtenerNombre()} ({ResponsableRegistro.Cargo})");
-        }
+        return payment.CalculatePendingAmount();
     }
-
-    public decimal CalcularMontoPendiente()
+    public void MakePayment(decimal amount)
     {
-        return CostoTotal - MontoPagado;
+        payment.MakePayment(amount);
     }
-
-    public void RealizarPago(decimal monto)
+    public bool IsFullyPaid()
     {
-        if (monto <= 0)
-        {
-            Console.WriteLine("\nEl monto debe ser mayor a 0");
-            return;
-        }
-
-        if (monto > CalcularMontoPendiente())
-        {
-            Console.WriteLine($"\nEl monto excede la deuda. Pendiente: ${CalcularMontoPendiente():N2}");
-            return;
-        }
-
-        MontoPagado += monto;
-        Console.WriteLine($"\nPago registrado: ${monto:N2}");
-        Console.WriteLine($"Total pagado: ${MontoPagado:N2}");
-        Console.WriteLine($"Pendiente: ${CalcularMontoPendiente():N2}");
+        return payment.IsFullyPaid();
     }
-
-    public bool EsPagadoCompleto()
+    public bool ValidateEnrollment()
     {
-        return MontoPagado >= CostoTotal;
-    }
-
-    private bool ValidarMatricula()
-    {
-        return Estudiante != null && 
-               Materias.Count > 0 && 
-               CostoTotal > 0 &&
-               ResponsableRegistro != null;
+        return Student != null && 
+               Courses.Count > 0 && 
+               TotalCost > 0 && 
+               Responsible != null;
     }
 }
