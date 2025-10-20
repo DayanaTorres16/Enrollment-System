@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Ejercicio1.Miembros;
-using Ejercicio1.Matricula;
+using Ejercicio1.Members;
+using Ejercicio1.Enrollment;
 
 class Program
 {
@@ -9,7 +9,7 @@ class Program
     {
         Console.WriteLine("UNIVERSITY ENROLLMENT SYSTEM\n");
 
-        Staff coordinator = new Staff("Carlos", "Rodriguez", 9876543)
+        Personal coordinator = new Personal("Carlos", "Rodriguez", 9876543)
         {
             Email = "carlos.rodriguez@university.edu",
             PhoneNumber = "+57 320 9876543",
@@ -18,7 +18,7 @@ class Program
             Salary = 4500000m
         };
 
-        Staff secretary = new Staff("Ana", "Martinez", 3456789)
+        Personal secretary = new Personal("Ana", "Martinez", 3456789)
         {
             Email = "ana.martinez@university.edu",
             PhoneNumber = "+57 315 3456789",
@@ -59,7 +59,7 @@ class Program
 
         Console.WriteLine("\n\nENROLLMENT PROCESS\n");
 
-        Enrollment enrollment1 = new Enrollment
+        Enrollment enrollment1 = new Enrollment (new Payment())
         {
             EnrollmentId = 1001,
             Student = student1,
@@ -78,7 +78,7 @@ class Program
         EnrollmentReporter.ShowEnrollmentDetails(enrollment1);
 
         Console.WriteLine("\n\nSECOND ENROLLMENT\n");
-        Enrollment enrollment2 = new Enrollment
+        Enrollment enrollment2 = new Enrollment (new Payment())
         {
             EnrollmentId = 1002,
             Student = student2,

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Ejercicio1.Abstracciones;
-namespace Ejercicio1.Matricula;
+using Ejercicio1.Interfaces;
+namespace Ejercicio1.Enrollment;
 
 public class Enrollment : IEnrollable
 {
@@ -12,13 +12,15 @@ public class Enrollment : IEnrollable
     public IStudent Student { get; set; }
     public List<ICourse> Courses { get; set; }
     public IResponsible Responsible { get; set; }
-    public Payment payment;
+    private readonly IPayable payment;
+    
+    public decimal AmountPaid => payment.AmountPaid;
 
-    public Enrollment()
+    public Enrollment( IPayable payment )
     {
         Courses = new List<ICourse>();
         Status = "Pending";
-        payment = new Payment();
+        this.payment = payment;
     }
 
     public void RegisterEnrollment()

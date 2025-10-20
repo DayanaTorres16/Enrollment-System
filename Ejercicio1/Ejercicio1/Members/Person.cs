@@ -1,4 +1,4 @@
-namespace Ejercicio1.Miembros;
+namespace Ejercicio1.Members;
 
 public abstract class Person
 {

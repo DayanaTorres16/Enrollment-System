@@ -1,6 +1,6 @@
 using System;
-using Ejercicio1.Abstracciones;
-namespace Ejercicio1.Matricula;
+using Ejercicio1.Interfaces;
+namespace Ejercicio1.Enrollment;
 
 
 public class Payment : IPayable

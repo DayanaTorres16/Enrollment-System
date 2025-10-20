@@ -1,4 +1,4 @@
-namespace Ejercicio1.Abstracciones;
+namespace Ejercicio1.Interfaces;
 
 public interface IEnrollable
 {
