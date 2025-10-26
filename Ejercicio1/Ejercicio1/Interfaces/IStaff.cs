@@ -1,6 +1,6 @@
 namespace Ejercicio1.Interfaces;
 
-public interface IResponsible
+public interface IStaff
 {
     string Position { get; }
     string GetFullName();

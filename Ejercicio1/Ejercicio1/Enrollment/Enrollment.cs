@@ -6,65 +6,60 @@ namespace Ejercicio1.Enrollment;
 public class Enrollment : IEnrollable
 {
     public int EnrollmentId { get; set; }
-    public DateTime EnrollmentDate { get; set; }
+    public DateTime EnrollmentDate { get; private set; }
     public string Status { get; private set; }
-    public decimal TotalCost { get; set; }
     public IStudent Student { get; set; }
     public List<ICourse> Courses { get; set; }
-    public IResponsible Responsible { get; set; }
-    private readonly IPayable payment;
     
+    private Payment payment;
+    private EnrollmentValidator validator;
+    private EnrollmentCostCalculator costCalculator;
+
+    public decimal TotalCost => payment.TotalCost;
     public decimal AmountPaid => payment.AmountPaid;
 
-    public Enrollment( IPayable payment )
+    public Enrollment()
     {
         Courses = new List<ICourse>();
         Status = "Pending";
-        this.payment = payment;
+        payment = new Payment();
+        validator = new EnrollmentValidator();
+        costCalculator = new EnrollmentCostCalculator();
     }
 
     public void RegisterEnrollment()
     {
-        if (ValidateEnrollment())
+        if (!validator.ValidateEnrollment(this))
         {
-            Status = "Active";
-            EnrollmentDate = DateTime.Now;
-            payment.TotalCost = this.TotalCost;
+            throw new InvalidOperationException("Enrollment could not be registered: Invalid data.");
         }
-        else
-        {
-            throw new InvalidOperationException("Enrollment could not be registered");
-        }
+
+        Status = "Active";
+        EnrollmentDate = DateTime.Now;
+        payment.TotalCost = costCalculator.CalculateTotalCost(Courses);
     }
 
     public void CancelEnrollment()
     {
-        if (Status == "Active")
+        if (Status != "Active")
         {
-            Status = "Canceled";
+            throw new InvalidOperationException("Only active enrollments can be canceled.");
         }
-        else
-        {
-            throw new InvalidOperationException("Enrollment cannot be canceled.");
-        }
+        Status = "Canceled";
     }
-    public decimal CalculatePendingAmount()
-    {
-        return payment.CalculatePendingAmount();
-    }
+
     public void MakePayment(decimal amount)
     {
         payment.MakePayment(amount);
     }
+
+    public decimal CalculatePendingAmount()
+    {
+        return payment.CalculatePendingAmount();
+    }
+
     public bool IsFullyPaid()
     {
         return payment.IsFullyPaid();
-    }
-    public bool ValidateEnrollment()
-    {
-        return Student != null && 
-               Courses.Count > 0 && 
-               TotalCost > 0 && 
-               Responsible != null;
     }
 }

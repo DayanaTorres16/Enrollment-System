@@ -2,11 +2,10 @@ using System;
 using Ejercicio1.Interfaces;
 namespace Ejercicio1.Enrollment;
 
-
 public class Payment : IPayable
 {
-    public decimal TotalCost  { get; set; }
-    public decimal AmountPaid  { get; set; }
+    public decimal TotalCost { get; set; }
+    public decimal AmountPaid { get; private set; }
     
     public decimal CalculatePendingAmount()
     {
@@ -14,7 +13,6 @@ public class Payment : IPayable
     }
 
     public void MakePayment(decimal amount)
-
     {
         if (amount <= 0)
         {
@@ -26,8 +24,9 @@ public class Payment : IPayable
         }
         AmountPaid += amount;
     }
+
     public bool IsFullyPaid()
     {
         return AmountPaid >= TotalCost;
     }
-};
+}

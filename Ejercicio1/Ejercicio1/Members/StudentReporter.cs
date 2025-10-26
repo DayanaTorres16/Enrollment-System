@@ -1,9 +1,9 @@
 using System;
 namespace Ejercicio1.Members;
 
-public class StudentReport
+public class StudentReporter
 {
-    public static void ShowStudentDetails (Student student)
+    public void ShowStudentDetails (Student student)
     {
         Console.WriteLine("\nSTUDENT INFORMATION");
         Console.WriteLine($"Code: {student.StudentCode}");
@@ -11,7 +11,7 @@ public class StudentReport
         Console.WriteLine($"Document Number: {student.GetDocumentNumber()}");
         Console.WriteLine($"Email: {student.Email}");
         Console.WriteLine($"Phone Number: {student.PhoneNumber}");
-        Console.WriteLine($"Major: {student.Career}");
+        Console.WriteLine($"Career: {student.Career}");
         Console.WriteLine($"Semester: {student.Semester}");
     }
 }

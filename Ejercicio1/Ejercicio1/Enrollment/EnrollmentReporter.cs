@@ -3,9 +3,9 @@ using System;
 
 namespace Ejercicio1.Enrollment;
 
-public static class EnrollmentReporter
+public class EnrollmentReporter
 {
-    public static void ShowEnrollmentDetails(Enrollment enrollment)
+    public void ShowEnrollmentDetails(Enrollment enrollment)
     {
         Console.WriteLine("\nENROLLMENT DETAILS");
         Console.WriteLine($"Enrollment ID: #{enrollment.EnrollmentId}");
@@ -14,7 +14,7 @@ public static class EnrollmentReporter
         Console.WriteLine($"\nStudent:");
         Console.WriteLine($"Name: {enrollment.Student.GetFullName()}");
         Console.WriteLine($"Code: {enrollment.Student.StudentCode}");
-        Console.WriteLine($"Major: {enrollment.Student.Career}");
+        Console.WriteLine($"Career: {enrollment.Student.Career}");
         Console.WriteLine($"Semester: {enrollment.Student.Semester}");
         Console.WriteLine($"\nFinancial Information:");
         Console.WriteLine($"Total Cost: ${enrollment.TotalCost:N2}");
@@ -25,10 +25,6 @@ public static class EnrollmentReporter
         foreach (var course in enrollment.Courses)
         {
             Console.WriteLine($"  - {course.Name} ({course.Credits} Credits)");
-        }
-        if (enrollment.Responsible != null)
-        {
-            Console.WriteLine($"\nRegistered by: {enrollment.Responsible.GetFullName()} ({enrollment.Responsible.Position})");
         }
     }
 }

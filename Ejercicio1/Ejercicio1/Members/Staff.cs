@@ -2,23 +2,20 @@ using System;
 using Ejercicio1.Interfaces;
 namespace Ejercicio1.Members;
 
-public class Personal : Person, IResponsible
+public class Staff : Person, IStaff
 {
     public string Position { get; set; }
     public string Department  { get; set; }
     public decimal Salary  { get; set; }
     public string EmployeeCode  { get; set; }
 
-    public Personal(string name, string lastName, int documentNumber)
+    public Staff(string name, string lastName, int documentNumber)
+        :base(name, lastName, documentNumber)
     {
-        Name = name;
-        LastName = lastName;
-        DocumentNumber = documentNumber;
         EmployeeCode = $"STAFF{documentNumber}";
     }
-
-    public override void ShowInformation()
+    public string GetFullName()
     {
-        PersonalReport.ShowPersonalDetails(this); 
+        return $"{Name} {LastName}";
     }
 }
