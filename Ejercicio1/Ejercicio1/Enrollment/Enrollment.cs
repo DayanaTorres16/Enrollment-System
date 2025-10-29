@@ -10,56 +10,65 @@ public class Enrollment : IEnrollable
     public string Status { get; private set; }
     public IStudent Student { get; set; }
     public List<ICourse> Courses { get; set; }
-    
-    private Payment payment;
-    private EnrollmentValidator validator;
-    private EnrollmentCostCalculator costCalculator;
 
-    public decimal TotalCost => payment.TotalCost;
-    public decimal AmountPaid => payment.AmountPaid;
+    private IPayment _payment;
+    private EnrollmentValidator _validator;
+    private ICostCalculator _costCalculator;
 
-    public Enrollment()
+    public decimal TotalCost => _payment.TotalCost;
+    public decimal AmountPaid => _payment.AmountPaid;
+
+    public Enrollment(ICostCalculator costCalculator, IPaymentProcessor paymentProcessor, IPayment payment, EnrollmentValidator validator )
     {
         Courses = new List<ICourse>();
         Status = "Pending";
-        payment = new Payment();
-        validator = new EnrollmentValidator();
-        costCalculator = new EnrollmentCostCalculator();
+        _payment = payment;
+        _validator = validator;
+        _costCalculator = costCalculator;
+    }
+
+    public void AddValidationRule(IValidationRule rule)
+    {
+        _validator.AddValidationRule(rule);
+    }
+
+    public void SetCostCalculator(ICostCalculator calculator)
+    {
+        _costCalculator = calculator;
     }
 
     public void RegisterEnrollment()
     {
-        if (!validator.ValidateEnrollment(this))
+        if (!_validator.ValidateEnrollment(this, out string errorMessage))
         {
-            throw new InvalidOperationException("Enrollment could not be registered: Invalid data.");
+            throw new InvalidOperationException($"Enrollment could not be registered: {errorMessage}");
         }
 
         Status = "Active";
         EnrollmentDate = DateTime.Now;
-        payment.TotalCost = costCalculator.CalculateTotalCost(Courses);
+        _payment.TotalCost = _costCalculator.CalculateTotalCost(Courses);
     }
 
     public void CancelEnrollment()
     {
         if (Status != "Active")
-        {
             throw new InvalidOperationException("Only active enrollments can be canceled.");
-        }
+
         Status = "Canceled";
     }
 
     public void MakePayment(decimal amount)
     {
-        payment.MakePayment(amount);
+        _payment.MakePayment(amount);
     }
 
     public decimal CalculatePendingAmount()
     {
-        return payment.CalculatePendingAmount();
+        return _payment.CalculatePendingAmount();
     }
 
     public bool IsFullyPaid()
     {
-        return payment.IsFullyPaid();
+        return _payment.IsFullyPaid();
     }
 }

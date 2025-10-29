@@ -2,11 +2,17 @@ using System;
 using Ejercicio1.Interfaces;
 namespace Ejercicio1.Enrollment;
 
-public class Payment : IPayable
+public class Payment : IPayment
 {
     public decimal TotalCost { get; set; }
-    public decimal AmountPaid { get; private set; }
-    
+    public decimal AmountPaid { get; set; }
+    private IPaymentProcessor _paymentProcessor;
+
+    public Payment(IPaymentProcessor paymentProcessor)
+    {
+        _paymentProcessor = paymentProcessor;
+    }
+
     public decimal CalculatePendingAmount()
     {
         return TotalCost - AmountPaid;
@@ -14,15 +20,7 @@ public class Payment : IPayable
 
     public void MakePayment(decimal amount)
     {
-        if (amount <= 0)
-        {
-            throw new ArgumentException("The amount must be greater than 0");
-        }
-        if (amount > CalculatePendingAmount())
-        {
-            throw new InvalidOperationException("The amount exceeds the debt.");
-        }
-        AmountPaid += amount;
+        _paymentProcessor.ProcessPayment(amount, this);
     }
 
     public bool IsFullyPaid()

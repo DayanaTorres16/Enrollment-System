@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
+using Ejercicio1.Interfaces;
 namespace Ejercicio1.Members;
 
-public class StudentReporter
+public class StudentReporter : IReporter<Student>
 {
-    public void ShowStudentDetails (Student student)
+    public void ShowDetails(Student student)
     {
         Console.WriteLine("\nSTUDENT INFORMATION");
         Console.WriteLine($"Code: {student.StudentCode}");

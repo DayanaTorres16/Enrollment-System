@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
+using Ejercicio1.Interfaces;
 namespace Ejercicio1.Members;
 
-public class StaffReporter
+public class StaffReporter: IReporter<Staff>
 {
-    public void ShowStaffDetails(Staff staff)
+    public void ShowDetails(Staff staff)
     {
         Console.WriteLine("\nSTAFF INFORMATION");
         Console.WriteLine($"Code: {staff.EmployeeCode}");

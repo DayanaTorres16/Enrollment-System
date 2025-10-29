@@ -1,11 +1,11 @@
-
 using System;
-
+using System.Collections.Generic;
+using Ejercicio1.Interfaces;
 namespace Ejercicio1.Enrollment;
 
-public class EnrollmentReporter
+public class EnrollmentReporter : IReporter<Enrollment>
 {
-    public void ShowEnrollmentDetails(Enrollment enrollment)
+    public void ShowDetails(Enrollment enrollment)
     {
         Console.WriteLine("\nENROLLMENT DETAILS");
         Console.WriteLine($"Enrollment ID: #{enrollment.EnrollmentId}");

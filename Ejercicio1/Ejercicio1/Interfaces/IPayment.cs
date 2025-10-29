@@ -1,8 +1,8 @@
 namespace Ejercicio1.Interfaces;
 
-public interface IPayable
+public interface IPayment
 {
-    decimal TotalCost  { get; }
+    decimal TotalCost  { get; set; }
     decimal AmountPaid  { get; }
     decimal CalculatePendingAmount();
     void MakePayment(decimal amount);
