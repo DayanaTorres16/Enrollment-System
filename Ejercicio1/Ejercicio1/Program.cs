@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using Ejercicio1.Interfaces;
 using Ejercicio1.Members;
 using Ejercicio1.Enrollment;
+using Ejercicio1.Enum;
 
 class Program
 {
     static void Main()
     {
-        Console.WriteLine("UNIVERSITY ENROLLMENT SYSTEM (WITH OPEN/CLOSED PRINCIPLE)\n");
-
+        Console.WriteLine("UNIVERSITY ENROLLMENT SYSTEM WITH STUDENT TYPES\n");
+        
         Staff coordinator = new Staff("Carlos", "Rodriguez", 9876543)
         {
             Email = "carlos.rodriguez@university.edu",
@@ -18,17 +19,8 @@ class Program
             Department = "Faculty of Engineering",
             Salary = 4500000m
         };
-
-        Staff secretary = new Staff("Ana", "Martinez", 3456789)
-        {
-            Email = "ana.martinez@university.edu",
-            PhoneNumber = "+57 315 3456789",
-            Position = "Academic Secretary",
-            Department = "Registration and Control",
-            Salary = 2800000m
-        };
-
-        Student student1 = new Student("Juan", "Perez", 1234567)
+        
+        Student student1 = new Student("Juan", "Perez", 1234567, StudentType.InPerson)
         {
             Email = "juan.perez@university.edu",
             PhoneNumber = "+57 300 1234567",
@@ -36,7 +28,7 @@ class Program
             Semester = 5
         };
 
-        Student student2 = new Student("Maria", "Garcia", 7654321)
+        Student student2 = new Student("Maria", "Garcia", 7654321, StudentType.Virtual)
         {
             Email = "maria.garcia@university.edu",
             PhoneNumber = "+57 310 7654321",
@@ -44,26 +36,40 @@ class Program
             Semester = 3
         };
 
-        Console.WriteLine("SHOWING INFORMATION OF ALL PERSONS\n");
-        
-        StaffReporter staffReporter = new StaffReporter();
-        staffReporter.ShowDetails(coordinator);
-        staffReporter.ShowDetails(secretary);
+        Student student3 = new Student("Pedro", "Lopez", 5555555, StudentType.Distance)
+        {
+            Email = "pedro.lopez@university.edu",
+            PhoneNumber = "+57 305 5555555",
+            Career = "Computer Science",
+            Semester = 4
+        };
+
+        Student student4 = new Student("Sofia", "Martinez", 8888888, StudentType.Exchange)
+        {
+            Email = "sofia.martinez@university.edu",
+            PhoneNumber = "+57 315 8888888",
+            Career = "International Relations",
+            Semester = 6
+        };
+
+        Console.WriteLine("SHOWING STUDENT INFORMATION WITH TYPES\n");
 
         StudentReporter studentReporter = new StudentReporter();
         studentReporter.ShowDetails(student1);
         studentReporter.ShowDetails(student2);
+        studentReporter.ShowDetails(student3);
+        studentReporter.ShowDetails(student4);
 
-        Console.WriteLine("\n\nENROLLMENT 1: STANDARD COST CALCULATION\n");
-        
+        Console.WriteLine("\n\nENROLLMENT 1: IN-PERSON STUDENT\n");
+
         var validator1 = new EnrollmentValidator();
         validator1.AddValidationRule(new StudentValidationRule());
         validator1.AddValidationRule(new CoursesValidationRule());
         validator1.AddValidationRule(new MaxCreditsValidationRule(20));
-        
+
         var paymentProcessor1 = new FullPaymentProcessor();
         var payment1 = new Payment(paymentProcessor1);
-        
+
         var enrollment1 = new Enrollment(
             new StandardCostCalculator(200000m),
             paymentProcessor1,
@@ -85,8 +91,8 @@ class Program
         EnrollmentReporter enrollmentReporter = new EnrollmentReporter();
         enrollmentReporter.ShowDetails(enrollment1);
 
-        Console.WriteLine("\nENROLLMENT 2: DISCOUNTED COST (20% OFF)\n");
-        
+        Console.WriteLine("\nENROLLMENT 2: VIRTUAL STUDENT WITH DISCOUNT\n");
+
         var validator2 = new EnrollmentValidator();
         validator2.AddValidationRule(new StudentValidationRule());
         validator2.AddValidationRule(new CoursesValidationRule());
@@ -111,21 +117,12 @@ class Program
         enrollment2.MakePayment(enrollment2.TotalCost);
 
         enrollmentReporter.ShowDetails(enrollment2);
-        
-        Console.WriteLine("\nENROLLMENT 3: TIERED PRICING (VOLUME DISCOUNT)\n");
 
-        Student student3 = new Student("Pedro", "Lopez", 5555555)
-        {
-            Email = "pedro.lopez@university.edu",
-            PhoneNumber = "+57 305 5555555",
-            Career = "Computer Science",
-            Semester = 4
-        };
-        
+        Console.WriteLine("\nENROLLMENT 3: EXCHANGE STUDENT\n");
+
         var validator3 = new EnrollmentValidator();
         validator3.AddValidationRule(new StudentValidationRule());
         validator3.AddValidationRule(new CoursesValidationRule());
-        validator3.AddValidationRule(new SemesterProgressionValidationRule());
 
         var paymentProcessor3 = new PartialPaymentProcessor(30m);
         var payment3 = new Payment(paymentProcessor3);
@@ -138,24 +135,19 @@ class Program
         );
 
         enrollment3.EnrollmentId = 1003;
-        enrollment3.Student = student3;
-        enrollment3.Courses.Add(new Course { Code = "ALG101", Name = "Algorithms", Credits = 4 });
-        enrollment3.Courses.Add(new Course { Code = "NET202", Name = "Networks", Credits = 4 });
-        enrollment3.Courses.Add(new Course { Code = "AI303", Name = "Artificial Intelligence", Credits = 4 });
-        enrollment3.Courses.Add(new Course { Code = "ML404", Name = "Machine Learning", Credits = 3 });
+        enrollment3.Student = student4;
+        enrollment3.Courses.Add(new Course { Code = "INT101", Name = "International Politics", Credits = 4 });
+        enrollment3.Courses.Add(new Course { Code = "ECO202", Name = "Global Economics", Credits = 4 });
 
         enrollment3.RegisterEnrollment();
-        enrollment3.MakePayment(1000000m);
+        enrollment3.MakePayment(600000m);
 
         enrollmentReporter.ShowDetails(enrollment3);
-        
-        Console.WriteLine("\nCANCELLATION TEST\n");
-        enrollment2.CancelEnrollment();
-        enrollmentReporter.ShowDetails(enrollment2);
 
         Console.WriteLine("\nSUMMARY");
         Console.WriteLine($"Total enrollments processed: 3");
-        Console.WriteLine($"Active enrollments: 2");
-        Console.WriteLine($"Canceled enrollments: 1");
+        Console.WriteLine($"In-Person Students: 1");
+        Console.WriteLine($"Virtual Students: 1");
+        Console.WriteLine($"Exchange Students: 1");
     }
 }

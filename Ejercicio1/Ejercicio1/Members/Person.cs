@@ -1,6 +1,5 @@
 using System;
 using Ejercicio1.Interfaces;
-
 namespace Ejercicio1.Members;
 
 public abstract class Person
@@ -29,5 +28,4 @@ public abstract class Person
     {
         return DocumentNumber;
     }
-    
 }

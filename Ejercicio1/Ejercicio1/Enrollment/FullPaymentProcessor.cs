@@ -7,14 +7,30 @@ public class FullPaymentProcessor : IPaymentProcessor
 {
     public string PaymentType => "Full Payment";
 
-    public void ProcessPayment(decimal amount, Payment payment)
+    public bool CanProcessPayment(decimal amount, Payment payment, out string errorMessage)
     {
+        errorMessage = string.Empty;
+
         if (amount <= 0)
-            throw new ArgumentException("The amount must be greater than 0");
+        {
+            errorMessage = "The amount must be greater than 0";
+            return false;
+        }
 
         if (amount > payment.CalculatePendingAmount())
-            throw new InvalidOperationException("The amount exceeds the debt.");
+        {
+            errorMessage = "The amount exceeds the debt.";
+            return false;
+        }
 
-        payment.AmountPaid += amount;
+        return true;
+    }
+
+    public void ProcessPayment(decimal amount, Payment payment)
+    {
+        if (!CanProcessPayment(amount, payment, out string errorMessage))
+            throw new InvalidOperationException(errorMessage);
+
+        payment.AddPayment(amount);
     }
 }

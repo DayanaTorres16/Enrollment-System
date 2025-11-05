@@ -14,20 +14,39 @@ public class PartialPaymentProcessor : IPaymentProcessor
 
     public string PaymentType => "Partial Payment";
 
-    public void ProcessPayment(decimal amount, Payment payment)
+    public bool CanProcessPayment(decimal amount, Payment payment, out string errorMessage)
     {
+        errorMessage = string.Empty;
+
         if (amount <= 0)
-            throw new ArgumentException("The amount must be greater than 0");
+        {
+            errorMessage = "The amount must be greater than 0";
+            return false;
+        }
+
+        if (amount > payment.CalculatePendingAmount())
+        {
+            errorMessage = "The amount exceeds the debt.";
+            return false;
+        }
 
         decimal minimumPayment = payment.TotalCost * (_minimumPaymentPercentage / 100);
         decimal currentTotal = payment.AmountPaid + amount;
 
         if (currentTotal < minimumPayment && !payment.IsFullyPaid())
-            throw new InvalidOperationException($"Minimum payment required: ${minimumPayment:N2}");
+        {
+            errorMessage = $"Minimum payment required: ${minimumPayment:N2}";
+            return false;
+        }
 
-        if (amount > payment.CalculatePendingAmount())
-            throw new InvalidOperationException("The amount exceeds the debt.");
+        return true;
+    }
 
-        payment.AmountPaid += amount;
+    public void ProcessPayment(decimal amount, Payment payment)
+    {
+        if (!CanProcessPayment(amount, payment, out string errorMessage))
+            throw new InvalidOperationException(errorMessage);
+
+        payment.AddPayment(amount);
     }
 }

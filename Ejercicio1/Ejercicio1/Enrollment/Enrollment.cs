@@ -11,9 +11,9 @@ public class Enrollment : IEnrollable
     public IStudent Student { get; set; }
     public List<ICourse> Courses { get; set; }
 
-    private IPayment _payment;
-    private EnrollmentValidator _validator;
-    private ICostCalculator _costCalculator;
+    private readonly IPayment _payment;
+    private readonly EnrollmentValidator _validator;
+    private readonly ICostCalculator _costCalculator;
 
     public decimal TotalCost => _payment.TotalCost;
     public decimal AmountPaid => _payment.AmountPaid;
@@ -25,16 +25,6 @@ public class Enrollment : IEnrollable
         _payment = payment;
         _validator = validator;
         _costCalculator = costCalculator;
-    }
-
-    public void AddValidationRule(IValidationRule rule)
-    {
-        _validator.AddValidationRule(rule);
-    }
-
-    public void SetCostCalculator(ICostCalculator calculator)
-    {
-        _costCalculator = calculator;
     }
 
     public void RegisterEnrollment()

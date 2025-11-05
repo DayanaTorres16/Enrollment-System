@@ -15,5 +15,6 @@ public class StudentReporter : IReporter<Student>
         Console.WriteLine($"Phone Number: {student.PhoneNumber}");
         Console.WriteLine($"Career: {student.Career}");
         Console.WriteLine($"Semester: {student.Semester}");
+        Console.WriteLine($"Type: {student.GetStudentTypeDescription()}");
     }
 }
