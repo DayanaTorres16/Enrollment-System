@@ -12,19 +12,22 @@ public class Enrollment : IEnrollable
     public List<ICourse> Courses { get; set; }
 
     private readonly IPayment _payment;
-    private readonly EnrollmentValidator _validator;
+    private readonly IEnrollmentValidator _validator;
     private readonly ICostCalculator _costCalculator;
+    private readonly IPaymentProcessor _paymentProcessor;
 
     public decimal TotalCost => _payment.TotalCost;
     public decimal AmountPaid => _payment.AmountPaid;
+    public IPaymentProcessor PaymentProcessor => _paymentProcessor; 
 
-    public Enrollment(ICostCalculator costCalculator, IPaymentProcessor paymentProcessor, IPayment payment, EnrollmentValidator validator )
+    public Enrollment(ICostCalculator costCalculator, IPaymentProcessor paymentProcessor, IPayment payment, IEnrollmentValidator validator)
     {
         Courses = new List<ICourse>();
         Status = "Pending";
         _payment = payment;
         _validator = validator;
         _costCalculator = costCalculator;
+        _paymentProcessor = paymentProcessor;
     }
 
     public void RegisterEnrollment()

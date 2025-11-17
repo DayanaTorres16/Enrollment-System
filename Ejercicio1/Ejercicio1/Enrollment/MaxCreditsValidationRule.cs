@@ -15,7 +15,7 @@ public class MaxCreditsValidationRule : IValidationRule
 
     public string ValidationMessage => $"The enrollment cannot exceed {_maxCredits} credits.";
 
-    public bool Validate(Enrollment enrollment)
+    public bool Validate(IEnrollable enrollment)
     {
         int totalCredits = enrollment.Courses.Sum(c => c.Credits);
         return totalCredits <= _maxCredits;

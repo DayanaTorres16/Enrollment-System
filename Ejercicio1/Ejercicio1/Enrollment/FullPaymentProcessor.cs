@@ -7,7 +7,7 @@ public class FullPaymentProcessor : IPaymentProcessor
 {
     public string PaymentType => "Full Payment";
 
-    public bool CanProcessPayment(decimal amount, Payment payment, out string errorMessage)
+    public bool CanProcessPayment(decimal amount, IPayment payment, out string errorMessage)
     {
         errorMessage = string.Empty;
 
@@ -26,7 +26,7 @@ public class FullPaymentProcessor : IPaymentProcessor
         return true;
     }
 
-    public void ProcessPayment(decimal amount, Payment payment)
+    public void ProcessPayment(decimal amount, IPayment payment)
     {
         if (!CanProcessPayment(amount, payment, out string errorMessage))
             throw new InvalidOperationException(errorMessage);

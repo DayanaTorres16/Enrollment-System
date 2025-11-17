@@ -1,8 +1,9 @@
+using Ejercicio1.Interfaces;
 namespace Ejercicio1.Enrollment;
 
 public interface IPaymentProcessor
 {
-    void ProcessPayment(decimal amount, Payment payment);
+    void ProcessPayment(decimal amount, IPayment payment);
     string PaymentType { get; }
-    bool CanProcessPayment(decimal amount, Payment payment, out string errorMessage);
+    bool CanProcessPayment(decimal amount, IPayment payment, out string errorMessage);
 }
