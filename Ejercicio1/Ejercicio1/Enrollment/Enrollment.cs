@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Ejercicio1.Interfaces;
 namespace Ejercicio1.Enrollment;
 
-public class Enrollment : IEnrollable
+public class Enrollment : IEnrollment
 {
     public int EnrollmentId { get; set; }
     public DateTime EnrollmentDate { get; private set; }
@@ -13,20 +13,20 @@ public class Enrollment : IEnrollable
 
     private readonly IPayment _payment;
     private readonly IEnrollmentValidator _validator;
-    private readonly ICostCalculator _costCalculator;
+    private readonly ICostCalculatorFactory _costCalculatorFactory;
     private readonly IPaymentProcessor _paymentProcessor;
 
     public decimal TotalCost => _payment.TotalCost;
     public decimal AmountPaid => _payment.AmountPaid;
     public IPaymentProcessor PaymentProcessor => _paymentProcessor; 
 
-    public Enrollment(ICostCalculator costCalculator, IPaymentProcessor paymentProcessor, IPayment payment, IEnrollmentValidator validator)
+    public Enrollment(ICostCalculatorFactory costCalculatorFactory, IPaymentProcessor paymentProcessor, IPayment payment, IEnrollmentValidator validator)
     {
         Courses = new List<ICourse>();
         Status = "Pending";
         _payment = payment;
         _validator = validator;
-        _costCalculator = costCalculator;
+        _costCalculatorFactory = costCalculatorFactory;
         _paymentProcessor = paymentProcessor;
     }
 
@@ -39,7 +39,8 @@ public class Enrollment : IEnrollable
 
         Status = "Active";
         EnrollmentDate = DateTime.Now;
-        _payment.TotalCost = _costCalculator.CalculateTotalCost(Courses);
+        ICostCalculator calculator = _costCalculatorFactory.CreateCalculator(Courses);
+        _payment.TotalCost = calculator.CalculateTotalCost(Courses);
     }
 
     public void CancelEnrollment()

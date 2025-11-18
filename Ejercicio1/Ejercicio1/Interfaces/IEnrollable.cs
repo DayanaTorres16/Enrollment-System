@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Ejercicio1.Interfaces;
 
-public interface IEnrollable
+public interface IEnrollment
 {
     int EnrollmentId { get; set; }
     DateTime EnrollmentDate { get;  }

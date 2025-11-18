@@ -6,7 +6,7 @@ public abstract class Person
 {
     public string Name { get; set; }
     public string LastName { get; set; }
-    private int DocumentNumber { get; set; }
+    public int DocumentNumber { get; set; }
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
 

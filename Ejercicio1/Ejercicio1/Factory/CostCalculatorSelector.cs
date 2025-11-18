@@ -4,7 +4,7 @@ using Ejercicio1.Interfaces;
 using Ejercicio1.Enrollment;
 namespace Ejercicio1.Factory;
 
-public class CostCalculatorSelector : ICostCalculator
+public class CostCalculatorSelector : ICostCalculatorFactory 
 {
     private readonly StandardCostCalculator _standardCalculator;
     private readonly TieredCostCalculator _tieredCalculator;
@@ -19,30 +19,27 @@ public class CostCalculatorSelector : ICostCalculator
         _tieredCalculator = tieredCalculator;
         _discountedCalculator = discountedCalculator;
     }
-
-    public decimal CalculateTotalCost(List<ICourse> courses)
+    
+    public ICostCalculator CreateCalculator(List<ICourse> courses)
     {
         if (courses == null || courses.Count == 0)
         {
-            return 0;
+            return _standardCalculator; 
         }
 
         int totalCredits = courses.Sum(c => c.Credits);
-        ICostCalculator selectedCalculator;
 
         if (totalCredits <= 12)
         {
-            selectedCalculator = _standardCalculator;
+            return _standardCalculator;
         }
         else if (totalCredits > 12 && totalCredits <= 16)
         {
-            selectedCalculator = _tieredCalculator;
+            return _tieredCalculator;
         }
         else 
         {
-            selectedCalculator = _discountedCalculator;
+            return _discountedCalculator;
         }
-        
-        return selectedCalculator.CalculateTotalCost(courses);
     }
 }

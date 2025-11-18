@@ -6,6 +6,7 @@ using System.Text;
 using Ejercicio1.Interfaces;
 using Ejercicio1.Members;
 using Ejercicio1.Enrollment;
+using Ejercicio1.EnrollmentRules;
 using Ejercicio1.Enum;
 using Ejercicio1.Factory;
 using Microsoft.AspNetCore.Builder;
@@ -38,19 +39,15 @@ builder.Services.AddScoped<DiscountedCostCalculator>(provider =>
 builder.Services.AddScoped<TieredCostCalculator>(provider => 
     new TieredCostCalculator(200000m));
 
-builder.Services.AddScoped<CostCalculatorSelector>();
-builder.Services.AddScoped<ICostCalculator>(provider => 
-    provider.GetRequiredService<CostCalculatorSelector>());
+builder.Services.AddScoped<ICostCalculatorFactory, CostCalculatorSelector>();
 
 builder.Services.AddScoped<FullPaymentProcessor>();
 builder.Services.AddScoped<PartialPaymentProcessor>(provider => 
     new PartialPaymentProcessor(30m));
 
-builder.Services.AddScoped<PaymentProcessorSelector>();
-builder.Services.AddScoped<IPaymentProcessor>(provider => 
-    provider.GetRequiredService<PaymentProcessorSelector>());
+builder.Services.AddScoped<IPaymentProcessor, PaymentProcessorSelector>();
 
-builder.Services.AddScoped<Enrollment>();
+builder.Services.AddScoped<Enrollment>(); 
 
 builder.Services.AddScoped<IPayment>(provider =>
 {
@@ -79,6 +76,7 @@ builder.Services.AddSingleton<List<Course>>(sp =>
         new Course { Code = "FIN202", Name = "Finanzas Corporativas", Credits = 4 }
     };
 });
+
 
 var app = builder.Build();
 
@@ -114,10 +112,8 @@ app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}", (
     List<Student> allStudents,
     List<Course> allCourses) =>
 {
-    Student? GetStudent(int docNum) => 
-        allStudents.FirstOrDefault(s => s.GetDocumentNumber() == docNum);
+    var student = allStudents.FirstOrDefault(s => s.GetDocumentNumber() == documentNumber);
     
-    var student = GetStudent(documentNumber);
     if (student == null)
     {
         return Results.NotFound($"Student with document number {documentNumber} not found.");
@@ -140,15 +136,7 @@ app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}", (
         return Results.Ok(new 
         {
             Message = $"Enrollment {enrollment.EnrollmentId} registered successfully!",
-            EnrollmentId = enrollment.EnrollmentId,
-            Student = student.GetFullName(),
-            StudentRuleApplied = (student.Semester == 1 || student.Type == StudentType.Exchange) ? "FULL Payment Forced" : "PARTIAL Payment Allowed",
-            TotalCost = enrollment.TotalCost,
-            AmountPaid = enrollment.AmountPaid,
-            PendingAmount = enrollment.CalculatePendingAmount(),
-            PaymentTypeUsed = enrollment.PaymentProcessor.PaymentType,
-            PaymentStatus = enrollment.IsFullyPaid() ? "FULLY PAID" : "PENDING",
-            CoursesCount = enrollment.Courses.Count
+            Enrollment = enrollment 
         });
     }
     catch (InvalidOperationException ex)
@@ -188,16 +176,8 @@ app.MapGet("/api/enrollment/heavy/{documentNumber}", (
         
         return Results.Ok(new 
         {
-            Message = $"Enrollment {enrollment.EnrollmentId} registered with Tiered Cost!",
-            EnrollmentId = enrollment.EnrollmentId,
-            Student = student.GetFullName(),
-            TotalCost = enrollment.TotalCost,
-            AmountPaid = enrollment.AmountPaid,
-            PendingAmount = enrollment.CalculatePendingAmount(),
-            CostCalculatorUsed = "Selected by CostCalculatorSelector (Tiered)",
-            PaymentTypeUsed = enrollment.PaymentProcessor.PaymentType,
-            PaymentStatus = enrollment.IsFullyPaid() ? "FULLY PAID" : "PENDING",
-            CoursesCount = enrollment.Courses.Count
+            Message = $"Enrollment {enrollment.EnrollmentId} registered with heavy course load!",
+            Enrollment = enrollment 
         });
     }
     catch (InvalidOperationException ex)
@@ -205,7 +185,6 @@ app.MapGet("/api/enrollment/heavy/{documentNumber}", (
         return Results.BadRequest(new { Error = ex.Message });
     }
 });
-
 app.Run();
 
     

@@ -17,7 +17,7 @@ public class EnrollmentValidator:IEnrollmentValidator
         _validationRules.Add(rule);
     }
 
-    public bool ValidateEnrollment(IEnrollable enrollment, out string errorMessage)
+    public bool ValidateEnrollment(IEnrollment enrollment, out string errorMessage)
     {
         foreach (var rule in _validationRules)
         {

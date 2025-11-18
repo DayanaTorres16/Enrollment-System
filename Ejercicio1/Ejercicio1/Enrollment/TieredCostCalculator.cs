@@ -9,6 +9,8 @@ public class TieredCostCalculator : ICostCalculator
     private readonly decimal _baseCostPerCredit;
 
     public TieredCostCalculator(decimal baseCostPerCredit = 200000m)
+    
+    
     {
         _baseCostPerCredit = baseCostPerCredit;
     }

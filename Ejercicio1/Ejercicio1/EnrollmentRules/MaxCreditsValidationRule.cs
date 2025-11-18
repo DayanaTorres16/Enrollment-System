@@ -1,8 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
+using Ejercicio1.Enrollment;
 using Ejercicio1.Interfaces;
-namespace Ejercicio1.Enrollment;
+
+namespace Ejercicio1.EnrollmentRules;
 
 public class MaxCreditsValidationRule : IValidationRule
 {
@@ -15,7 +15,7 @@ public class MaxCreditsValidationRule : IValidationRule
 
     public string ValidationMessage => $"The enrollment cannot exceed {_maxCredits} credits.";
 
-    public bool Validate(IEnrollable enrollment)
+    public bool Validate(IEnrollment enrollment)
     {
         int totalCredits = enrollment.Courses.Sum(c => c.Credits);
         return totalCredits <= _maxCredits;

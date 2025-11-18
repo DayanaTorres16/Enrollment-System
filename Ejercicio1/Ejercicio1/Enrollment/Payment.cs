@@ -8,9 +8,9 @@ public class Payment : IPayment
     private decimal _amountPaid;
     public decimal AmountPaid => _amountPaid;
     private IPaymentProcessor _paymentProcessor;
-    private readonly IEnrollable _enrollment;
+    private readonly IEnrollment _enrollment;
 
-    public Payment(IPaymentProcessor paymentProcessor, IEnrollable enrollment)
+    public Payment(IPaymentProcessor paymentProcessor, IEnrollment enrollment)
     {
         _paymentProcessor = paymentProcessor;
         _enrollment = enrollment;
@@ -21,7 +21,7 @@ public class Payment : IPayment
     {
         return TotalCost - _amountPaid;
     }
-    public IEnrollable GetEnrollmentContext()
+    public IEnrollment GetEnrollmentContext()
     {
         return _enrollment;
     }

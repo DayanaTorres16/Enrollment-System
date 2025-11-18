@@ -4,6 +4,6 @@ namespace Ejercicio1.Enrollment;
 
 public interface IValidationRule
 {
-    bool Validate(IEnrollable enrollment);
+    bool Validate(IEnrollment enrollment);
     string ValidationMessage { get; }
 }
