@@ -47,14 +47,12 @@ builder.Services.AddScoped<PartialPaymentProcessor>(provider =>
 
 builder.Services.AddScoped<IPaymentProcessor, PaymentProcessorSelector>();
 
-builder.Services.AddScoped<Enrollment>(); 
+builder.Services.AddScoped<Enrollment>();
 
 builder.Services.AddScoped<IPayment>(provider =>
 {
     var processor = provider.GetRequiredService<IPaymentProcessor>();
-    var enrollment = provider.GetRequiredService<Enrollment>();
-    
-    return new Payment(processor, enrollment);
+    return new Payment(processor);
 });
 
 builder.Services.AddSingleton<List<Student>>(sp =>
@@ -108,6 +106,7 @@ app.MapGet("/api/coordinator", () =>
 app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}", (
     int documentNumber, 
     decimal initialPayment,
+    IPayment payment, 
     Enrollment enrollment, 
     List<Student> allStudents,
     List<Course> allCourses) =>
@@ -131,6 +130,12 @@ app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}", (
             .ToList<ICourse>();
         
         enrollment.RegisterEnrollment();
+
+        if (payment is Payment concretePayment)
+        {
+            concretePayment.EnrollmentContext = enrollment;
+        }
+        
         enrollment.MakePayment(initialPayment); 
         
         return Results.Ok(new 
@@ -147,14 +152,13 @@ app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}", (
 
 app.MapGet("/api/enrollment/heavy/{documentNumber}", (
     int documentNumber, 
+    IPayment payment,
     Enrollment enrollment, 
     List<Student> allStudents,
     List<Course> allCourses) =>
 {
-    Student? GetStudent(int docNum) => 
-        allStudents.FirstOrDefault(s => s.GetDocumentNumber() == docNum);
+    var student = allStudents.FirstOrDefault(s => s.GetDocumentNumber() == documentNumber);
     
-    var student = GetStudent(documentNumber);
     if (student == null)
     {
         return Results.NotFound($"Student with document number {documentNumber} not found.");
@@ -172,6 +176,12 @@ app.MapGet("/api/enrollment/heavy/{documentNumber}", (
             .ToList<ICourse>();
         
         enrollment.RegisterEnrollment();
+        
+        if (payment is Payment concretePayment)
+        {
+            concretePayment.EnrollmentContext = enrollment;
+        }
+
         enrollment.MakePayment(enrollment.TotalCost);
         
         return Results.Ok(new 

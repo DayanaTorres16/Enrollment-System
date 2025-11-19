@@ -6,15 +6,15 @@ public class Payment : IPayment
 {
     public decimal TotalCost { get; set; }
     private decimal _amountPaid;
+    public IEnrollment EnrollmentContext { get; set; }
     public decimal AmountPaid => _amountPaid;
     private IPaymentProcessor _paymentProcessor;
-    private readonly IEnrollment _enrollment;
 
-    public Payment(IPaymentProcessor paymentProcessor, IEnrollment enrollment)
+    public Payment(IPaymentProcessor paymentProcessor)
     {
         _paymentProcessor = paymentProcessor;
-        _enrollment = enrollment;
         _amountPaid = 0;
+        TotalCost = 0;
     }
 
     public decimal CalculatePendingAmount()
@@ -23,7 +23,7 @@ public class Payment : IPayment
     }
     public IEnrollment GetEnrollmentContext()
     {
-        return _enrollment;
+        return EnrollmentContext;
     }
     public void MakePayment(decimal amount)
     {
