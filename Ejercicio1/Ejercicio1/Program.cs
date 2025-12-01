@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Ejercicio1.Interfaces;
 using Ejercicio1.Members;
 using Ejercicio1.Enrollment;
@@ -81,8 +82,10 @@ var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.MapGet("/api/students", (List<Student> students) =>
+app.MapGet("/api/students", async (List<Student> students) =>
 {
+    await Task.Delay(200);
+
     if (students == null || students.Count == 0)
     {
         return Results.NotFound("No students found.");
@@ -90,8 +93,10 @@ app.MapGet("/api/students", (List<Student> students) =>
     return Results.Ok(students);
 });
 
-app.MapGet("/api/coordinator", () =>
+app.MapGet("/api/coordinator", async () =>
 {
+    await Task.Delay(200); 
+
     var coordinator = new Staff("Carlos", "Rodriguez", 9876543)
     {
         Email = "carlos.rodriguez@university.edu",
@@ -103,14 +108,16 @@ app.MapGet("/api/coordinator", () =>
     return Results.Ok(coordinator);
 });
 
-app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}", (
-    int documentNumber, 
-    decimal initialPayment,
-    IPayment payment, 
-    Enrollment enrollment, 
-    List<Student> allStudents,
-    List<Course> allCourses) =>
+app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}", 
+    async (int documentNumber, 
+           decimal initialPayment,
+           IPayment payment, 
+           Enrollment enrollment, 
+           List<Student> allStudents,
+           List<Course> allCourses) =>
 {
+    await Task.Delay(200);
+
     var student = allStudents.FirstOrDefault(s => s.GetDocumentNumber() == documentNumber);
     
     if (student == null)
@@ -129,14 +136,14 @@ app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}", (
             .Where(c => selectedCourseCodes.Contains(c.Code))
             .ToList<ICourse>();
         
-        enrollment.RegisterEnrollment();
+        await Task.Run(() => enrollment.RegisterEnrollment());
 
         if (payment is Payment concretePayment)
         {
             concretePayment.EnrollmentContext = enrollment;
         }
         
-        enrollment.MakePayment(initialPayment); 
+        await Task.Run(() => enrollment.MakePayment(initialPayment)); 
         
         return Results.Ok(new 
         {
@@ -150,13 +157,15 @@ app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}", (
     }
 });
 
-app.MapGet("/api/enrollment/heavy/{documentNumber}", (
-    int documentNumber, 
-    IPayment payment,
-    Enrollment enrollment, 
-    List<Student> allStudents,
-    List<Course> allCourses) =>
+app.MapGet("/api/enrollment/heavy/{documentNumber}", 
+    async (int documentNumber, 
+           IPayment payment,
+           Enrollment enrollment, 
+           List<Student> allStudents,
+           List<Course> allCourses) =>
 {
+    await Task.Delay(200);
+
     var student = allStudents.FirstOrDefault(s => s.GetDocumentNumber() == documentNumber);
     
     if (student == null)
@@ -175,14 +184,14 @@ app.MapGet("/api/enrollment/heavy/{documentNumber}", (
             .Where(c => selectedCourseCodes.Contains(c.Code))
             .ToList<ICourse>();
         
-        enrollment.RegisterEnrollment();
+        await Task.Run(() => enrollment.RegisterEnrollment());
         
         if (payment is Payment concretePayment)
         {
             concretePayment.EnrollmentContext = enrollment;
         }
 
-        enrollment.MakePayment(enrollment.TotalCost);
+        await Task.Run(() => enrollment.MakePayment(enrollment.TotalCost));
         
         return Results.Ok(new 
         {
@@ -195,4 +204,5 @@ app.MapGet("/api/enrollment/heavy/{documentNumber}", (
         return Results.BadRequest(new { Error = ex.Message });
     }
 });
+
 app.Run();
