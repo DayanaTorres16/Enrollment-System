@@ -13,4 +13,6 @@ public interface IEnrollment
     
     void RegisterEnrollment();
     void CancelEnrollment();
+
+    void MakePayment(decimal amount);
 }

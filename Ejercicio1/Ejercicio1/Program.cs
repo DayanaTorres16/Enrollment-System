@@ -10,8 +10,11 @@ using Ejercicio1.Enrollment;
 using Ejercicio1.EnrollmentRules;
 using Ejercicio1.Enum;
 using Ejercicio1.Factory;
+using Ejercicio1.Repository;
+using Ejercicio1.Repository.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -48,7 +51,7 @@ builder.Services.AddScoped<PartialPaymentProcessor>(provider =>
 
 builder.Services.AddScoped<IPaymentProcessor, PaymentProcessorSelector>();
 
-builder.Services.AddScoped<Enrollment>();
+builder.Services.AddScoped<IEnrollment,Enrollment>();
 
 builder.Services.AddScoped<IPayment>(provider =>
 {
@@ -65,16 +68,18 @@ builder.Services.AddSingleton<List<Student>>(sp =>
     };
 });
 
-builder.Services.AddSingleton<List<Course>>(sp =>
+builder.Services.AddSingleton<List<CourseData>>(sp =>
 {
-    return new List<Course>
+    return new List<CourseData>
     {
-        new Course { Code = "POO101", Name = "Programación Orientada a Objetos", Credits = 4 },
-        new Course { Code = "BDA202", Name = "Bases de Datos Avanzadas", Credits = 3 },
-        new Course { Code = "MKT101", Name = "Marketing Digital", Credits = 3 },
-        new Course { Code = "FIN202", Name = "Finanzas Corporativas", Credits = 4 }
+        new CourseData { Code = "POO101", Name = "Programación Orientada a Objetos", Credits = 4 },
+        new CourseData { Code = "BDA202", Name = "Bases de Datos Avanzadas", Credits = 3 },
+        new CourseData { Code = "MKT101", Name = "Marketing Digital", Credits = 3 },
+        new CourseData { Code = "FIN202", Name = "Finanzas Corporativas", Credits = 4 }
     };
 });
+
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 
 
 var app = builder.Build();
@@ -112,9 +117,8 @@ app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}",
     async (int documentNumber, 
            decimal initialPayment,
            IPayment payment, 
-           Enrollment enrollment, 
-           List<Student> allStudents,
-           List<Course> allCourses) =>
+           IEnrollment enrollment, 
+           List<Student> allStudents) =>
 {
     await Task.Delay(200);
 
@@ -132,11 +136,8 @@ app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}",
         enrollment.EnrollmentId = new Random().Next(2000, 3000);
         enrollment.Student = student;
         
-        enrollment.Courses = allCourses
-            .Where(c => selectedCourseCodes.Contains(c.Code))
-            .ToList<ICourse>();
-        
-        await Task.Run(() => enrollment.RegisterEnrollment());
+
+        enrollment.RegisterEnrollment();
 
         if (payment is Payment concretePayment)
         {
@@ -157,52 +158,5 @@ app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}",
     }
 });
 
-app.MapGet("/api/enrollment/heavy/{documentNumber}", 
-    async (int documentNumber, 
-           IPayment payment,
-           Enrollment enrollment, 
-           List<Student> allStudents,
-           List<Course> allCourses) =>
-{
-    await Task.Delay(200);
-
-    var student = allStudents.FirstOrDefault(s => s.GetDocumentNumber() == documentNumber);
-    
-    if (student == null)
-    {
-        return Results.NotFound($"Student with document number {documentNumber} not found.");
-    }
-
-    try
-    {
-        var selectedCourseCodes = new[] { "POO101", "BDA202", "FIN202", "MKT101" }; 
-        
-        enrollment.EnrollmentId = new Random().Next(3000, 4000);
-        enrollment.Student = student;
-        
-        enrollment.Courses = allCourses
-            .Where(c => selectedCourseCodes.Contains(c.Code))
-            .ToList<ICourse>();
-        
-        await Task.Run(() => enrollment.RegisterEnrollment());
-        
-        if (payment is Payment concretePayment)
-        {
-            concretePayment.EnrollmentContext = enrollment;
-        }
-
-        await Task.Run(() => enrollment.MakePayment(enrollment.TotalCost));
-        
-        return Results.Ok(new 
-        {
-            Message = $"Enrollment {enrollment.EnrollmentId} registered with heavy course load!",
-            Enrollment = enrollment 
-        });
-    }
-    catch (InvalidOperationException ex)
-    {
-        return Results.BadRequest(new { Error = ex.Message });
-    }
-});
 
 app.Run();
