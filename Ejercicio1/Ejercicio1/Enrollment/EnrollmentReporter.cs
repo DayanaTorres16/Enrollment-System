@@ -1,0 +1,30 @@
+using System;
+using System.Collections.Generic;
+using Ejercicio1.Interfaces;
+namespace Ejercicio1.Enrollment;
+
+public class EnrollmentReporter : IReporter<Enrollment>
+{
+    public void ShowDetails(Enrollment enrollment)
+    {
+        Console.WriteLine("\nENROLLMENT DETAILS");
+        Console.WriteLine($"Enrollment ID: #{enrollment.EnrollmentId}");
+        Console.WriteLine($"Status: {enrollment.Status}");
+        Console.WriteLine($"Date: {enrollment.EnrollmentDate:dd/MM/yyyy}");
+        Console.WriteLine($"\nStudent:");
+        Console.WriteLine($"Name: {enrollment.Student.GetFullName()}");
+        Console.WriteLine($"Code: {enrollment.Student.StudentCode}");
+        Console.WriteLine($"Career: {enrollment.Student.Career}");
+        Console.WriteLine($"Semester: {enrollment.Student.Semester}");
+        Console.WriteLine($"\nFinancial Information:");
+        Console.WriteLine($"Total Cost: ${enrollment.TotalCost:N2}");
+        Console.WriteLine($"Amount Paid: ${enrollment.AmountPaid:N2}");
+        Console.WriteLine($"Pending Amount: ${enrollment.CalculatePendingAmount():N2}");
+        Console.WriteLine($"Payment Status: {(enrollment.IsFullyPaid() ? "FULLY PAID" : "PENDING")}");
+        Console.WriteLine($"\nEnrolled Courses ({enrollment.Courses.Count}):");
+        foreach (var course in enrollment.Courses)
+        {
+            Console.WriteLine($"  - {course.Name} ({course.Credits} Credits)");
+        }
+    }
+}
