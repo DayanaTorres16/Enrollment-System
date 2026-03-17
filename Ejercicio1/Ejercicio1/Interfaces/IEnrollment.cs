@@ -11,6 +11,9 @@ public interface IEnrollment
     IStudent Student { get; set; }
     List<ICourse> Courses { get; set; }
     
+    decimal TotalCost { get; }
+    decimal AmountPaid { get; }
+    
     void RegisterEnrollment();
     void CancelEnrollment();
 

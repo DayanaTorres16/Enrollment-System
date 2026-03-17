@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Ejercicio1.Interfaces;
 using Ejercicio1.Members;
@@ -14,9 +12,7 @@ using Ejercicio1.Repository;
 using Ejercicio1.Repository.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -118,10 +114,11 @@ app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}",
            decimal initialPayment,
            IPayment payment, 
            IEnrollment enrollment, 
+           ICourseRepository courseRepo, 
            List<Student> allStudents) =>
 {
     await Task.Delay(200);
-
+    
     var student = allStudents.FirstOrDefault(s => s.GetDocumentNumber() == documentNumber);
     
     if (student == null)
@@ -129,16 +126,32 @@ app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}",
         return Results.NotFound($"Student with document number {documentNumber} not found.");
     }
 
+    
     try
     {
         var selectedCourseCodes = new[] { "POO101", "BDA202", "FIN202" }; 
         
+        student.EnrolledCourses ??= new List<ICourse>();
+        student.EnrolledCourses.Clear();
+
+        foreach (var code in selectedCourseCodes)
+        {
+            var courseData = courseRepo.GetCourse(code);
+            if (courseData != null)
+            {
+                student.EnrolledCourses.Add(new Course 
+                { 
+                    Code = courseData.Code, 
+                    Name = courseData.Name, 
+                    Credits = courseData.Credits 
+                });
+            }
+        }
         enrollment.EnrollmentId = new Random().Next(2000, 3000);
         enrollment.Student = student;
         
-
         enrollment.RegisterEnrollment();
-
+        
         if (payment is Payment concretePayment)
         {
             concretePayment.EnrollmentContext = enrollment;
@@ -149,7 +162,11 @@ app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}",
         return Results.Ok(new 
         {
             Message = $"Enrollment {enrollment.EnrollmentId} registered successfully!",
-            Enrollment = enrollment 
+            Student = student.GetFullName(),
+            CoursesEnrolled = student.EnrolledCourses.Count,
+            TotalCost = enrollment.TotalCost,
+            AmountPaid = enrollment.AmountPaid,
+            Status = enrollment.Status
         });
     }
     catch (InvalidOperationException ex)
@@ -157,6 +174,4 @@ app.MapGet("/api/enrollment/register/{documentNumber}/{initialPayment}",
         return Results.BadRequest(new { Error = ex.Message });
     }
 });
-
-
 app.Run();

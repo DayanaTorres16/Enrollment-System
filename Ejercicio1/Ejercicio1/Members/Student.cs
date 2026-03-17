@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Ejercicio1.Interfaces;
 using Ejercicio1.Enum;
 namespace Ejercicio1.Members;
@@ -15,6 +17,15 @@ public class Student : IPerson, IStudent
     public int Semester { get; set; }
     public string StudentCode { get; set; }
     public StudentType Type { get; set; }
+
+    public List<ICourse> EnrolledCourses { get; set;  } = new List<ICourse>();
+    public void AddCourse(ICourse course)
+    {
+        if (course != null && !EnrolledCourses.Any(c => c.Code == course.Code))
+        {
+            EnrolledCourses.Add(course);
+        }
+    }
 
     public Student(string name, string lastName, int documentNumber, StudentType type = StudentType.InPerson)
     {
